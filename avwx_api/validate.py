@@ -143,7 +143,7 @@ _multi_station = {Required("stations"): MultiStation}
 _location = {Required("location"): Location(coerce_station=False)}
 
 _flight_path = {Required("route"): FlightRoute}
-_text_path = {Required("route"): SplitChar(";")}
+# _text_path = {Required("route"): SplitChar(";")}
 
 _distance_from = {Required("distance", default=10): All(Coerce(int), Range(min=1, max=125))}
 _distance_along = {Required("distance", default=5): All(Coerce(float), Range(min=0, max=100))}
@@ -170,7 +170,7 @@ def _coord_search_validator(param_name: str, *, coerce_station: bool) -> Callabl
         schema = _report_shared | _uses_cache
         search_params = _schema(_station_search)(params)
         schema[Required(param_name)] = Location(coerce_station=coerce_station, **search_params)
-        return _schema(schema)(params)
+        return _schema(schema)(params)  # type: ignore
 
     return validator
 
@@ -193,7 +193,7 @@ airsig_along = _schema(required | _flight_path)
 airsig_contains = _schema(required | _location)
 
 notam_location = _schema(_report_shared | _uses_cache | _location | _distance_from)
-notam_along = _schema(required | _text_path | _distance_along)
+notam_along = _schema(required | _flight_path | _distance_along)
 
 coord_search = _schema(_search_base | _coord_search)
 text_search = _schema(_search_base | _text_search)

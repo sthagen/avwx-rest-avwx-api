@@ -124,7 +124,7 @@ class NotamLocation(ReportLocation, DistanceFrom):
 
 @dataclass
 class NotamRoute(Params, DistanceFrom):
-    route: list[str]
+    route: list[Coord]
 
 
 _NAMED_OPTIONS = ("translate", "summary", "speech")
@@ -146,7 +146,7 @@ class ParseConfig:  # pylint: disable=too-many-instance-attributes
     @staticmethod
     def use_aviowiki_data(token: Token | None) -> bool:
         """Returns True if a token has the AvioWiki Data addon"""
-        return token and "awdata" in token.addons
+        return token is not None and "awdata" in token.addons
 
     @classmethod
     def from_params(cls, params: Params, token: Token | None) -> "ParseConfig":

@@ -19,7 +19,6 @@ from avwx_api.api.base import (
     parse_params,
     token_check,
 )
-from avwx_api.handle.notam import NotamHandler
 from avwx_api.handle.summary import SummaryHandler
 
 MT_REPL = {"base": "altitude"}
@@ -167,29 +166,6 @@ class AirSigContains(Base):
             "reports": self._filter_contains(coord.point, data["reports"]),
         }
         return self.make_response(resp, params)
-
-
-## NOTAM
-
-
-@app.route("/api/notam/<location>")
-class NotamFetch(Report):
-    report_type = "notam"
-    loc_param = "location"
-    plan_types = ("enterprise",)
-    struct = structs.NotamLocation
-    validator = validate.notam_location
-    handler = NotamHandler()
-    key_remv = ("remarks",)
-
-
-@app.route("/api/parse/notam")
-class NotamParse(Parse):
-    report_type = "notam"
-    loc_param = "location"
-    plan_types = ("enterprise",)
-    handler = NotamHandler()
-    key_remv = ("remarks",)
 
 
 ## Summary

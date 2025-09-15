@@ -93,7 +93,7 @@ async def get_aviowiki_data(code: str) -> dict | None:
     """Fetch aviowiki data"""
     if data := await app.cache.get(TABLE, code):
         del data["_id"]
-        return data
+        return data  # type: ignore
     data = await fetch_from_aviowiki(code)
     if data:
         await app.cache.update(TABLE, code, data)
